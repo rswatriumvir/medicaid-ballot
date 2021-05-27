@@ -20,14 +20,15 @@ okl_dt=okl %>%
 
 mt_dt=mt %>%
   select(...2,...3,...4) %>%
-  mt_dt=mt_dt[-c(1,2,3),] 
-  #mutate(State="Montana") %>%
-  #rename(county=...2) %>%
-  #rename(Votes_For=...3) %>%
-  #rename(Votes_Against=...4)
-  ##mutate(Total_Votes=mt_dt$...3+mt_dt$...4, na.rm=TRUE)%>%
-  ##mutate(Share_For=mt_dt$...3/Total_Votes, na.rm=TRUE) %>%
-  ##mutate(Share_Against=mt_dt$...4/Total_Votes, na.rm=TRUE)
+  slice(-(1:6)) %>%
+  mutate(State="Montana") %>%
+  rename(county=...2) %>%
+  rename(Votes_For=...3) %>%
+  rename(Votes_Against=...4)
+  mutate(Total_Votes=Votes_For+Votes_Against)%>%
+  mutate(Share_For=Votes_For/Total_Votes) %>%
+  mutate(Share_Against=Votes_Against/Total_Votes)
+
   
 
 
