@@ -1,11 +1,15 @@
 library(tidyverse)
 library(readxl)
 library(dplyr)
+library(tabulizer)
+library(tabulizerjars)
 #load libraries
 
 okl=read_csv("raw_data/oklahoma_june_2020_elec.csv")
 id=read_excel("raw_data/idaho_2018_results.xls", sheet="Props - Voting Stats")
 mt=read_excel("raw_data/montana_2018_tobacco.xlsx")
+ut=extract_tables("2018 General Election Canvass Utah.pdf")
+nb=extract_tables("nebraska_2018_elec.pdf")
 #load data
 
 okl_dt=okl %>% 
