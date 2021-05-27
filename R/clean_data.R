@@ -4,7 +4,7 @@ library(dplyr)
 #load libraries
 
 okl=read_csv("raw_data/oklahoma_june_2020_elec.csv")
-id=read_excel("raw_data/idaho_2018_results.xls")
+id=read_excel("raw_data/idaho_2018_results.xls", sheet="Props - Voting Stats")
 mt=read_excel("raw_data/montana_2018_tobacco.xlsx")
 #load data
 
@@ -24,10 +24,15 @@ mt_dt=mt %>%
   mutate(State="Montana") %>%
   rename(county=...2) %>%
   rename(Votes_For=...3) %>%
-  rename(Votes_Against=...4)
-  mutate(Total_Votes=Votes_For+Votes_Against)%>%
+  rename(Votes_Against=...4) %>%
+  as.double(Votes_For) %>%
+  as.double(Votes_Against) %>%
+  mutate(Total_Votes=Votes_For+Votes_Against) %>%
   mutate(Share_For=Votes_For/Total_Votes) %>%
   mutate(Share_Against=Votes_Against/Total_Votes)
+
+id_dt=id %>%
+  
 
   
 
