@@ -17,5 +17,4 @@
 ## TODO (5/28/2021):
 
 - make code conform to tidy style guide (https://style.tidyverse.org/index.html)
-- finish cleaning up the excel files
-- combine excel files into one
+- finish cleaning up the excel files and combine resulting tidy data into one tibble
