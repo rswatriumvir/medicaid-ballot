@@ -10,8 +10,8 @@ id=read_excel("raw_data/idaho_2018_results.xls", sheet="Props - Voting Stats")
 mt=read_excel("raw_data/montana_2018_tobacco.xlsx")
 ut=extract_tables("raw_data/2018 General Election Canvass Utah.pdf")
 nb=extract_tables("raw_data/nebraska_2018_elec.pdf")
-nb_dt=nb[318] ##list element with proposition data
-nb_dt1=rbind(nb_dt)
+nb_dt=nb[318] ##list element with proposition data for Nebraska
+nb_dt1=do.call(rbind, nb_dt)
 #load data
 
 okl_dt=okl %>% 
