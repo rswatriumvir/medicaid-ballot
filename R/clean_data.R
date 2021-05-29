@@ -20,7 +20,7 @@ okl_dt = okl %>%
   mutate(State="Oklahoma") %>%
   mutate(Total_Votes=`FOR THE PROPOSAL - YES`+ `AGAINST THE PROPOSAL - NO`) %>%
   mutate(Share_For=(`FOR THE PROPOSAL - YES`/Total_Votes)*100) %>%
-  mutate(Share_Against=(`AGAINST THE PROPOSAL - NO`/Total_Votes)*100)
+  mutate(Share_Against=(`AGAINST THE PROPOSAL - NO`/Total_Votes)*100) 
 
 
 ## idaho
@@ -42,17 +42,13 @@ mt = read_excel("raw_data/montana_2018_tobacco.xlsx",
 
 
 mt_dt=mt %>%
-  select(...2,...3,...4) %>%
-  slice(-(1:6)) %>%
+  select(County,`YES on INITIATIVE NO. 185`,`NO on INITIATIVE NO. 185`) %>%
   mutate(State="Montana") %>%
-  rename(county=...2) %>%
-  rename(Votes_For=...3) %>%
-  rename(Votes_Against=...4) %>%
-  as.double(Votes_For) %>%
-  as.double(Votes_Against) %>%
+  rename(Votes_For=`YES on INITIATIVE NO. 185`) %>%
+  rename(Votes_Against=`NO on INITIATIVE NO. 185`) %>%
   mutate(Total_Votes=Votes_For+Votes_Against) %>%
-  mutate(Share_For=Votes_For/Total_Votes) %>%
-  mutate(Share_Against=Votes_Against/Total_Votes)
+  mutate(Share_For=(Votes_For/Total_Votes)*100) %>%
+  mutate(Share_Against=(Votes_Against/Total_Votes)*100)
 
 
   
