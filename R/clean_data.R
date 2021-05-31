@@ -4,7 +4,7 @@ library(readxl)
 library(tabulizer)
 library(tabulizerjars)
 
-
+options(scipen = 999) ##eliminates scientific notation, releavent for Idaho's data which was in scientific notation 
 
 # deal with excel -------------------------------------------------------------------
 
@@ -25,6 +25,7 @@ okl_dt = okl %>%
   mutate(share_against = (votes_against / total_votes) * 100) 
 
 
+
 ## idaho
 
 # original file has useless first five rows; skip them
@@ -40,8 +41,10 @@ id_dt = id %>%
   mutate(total_votes = votes_for + votes_against) %>%
   mutate(share_for = (votes_for / total_votes) * 100) %>%
   mutate(share_against = (votes_against / total_votes) * 100) %>%
-  mutate(elec_date = '11/06/2018')
-  
+  mutate(elec_date = '11/06/2018') %>%
+  rename(county = Counties) %>%
+  slice(-(45:47))
+
   
   
   
@@ -59,13 +62,15 @@ mt = read_excel("raw_data/montana_2018_tobacco.xlsx",
 
 mt_dt = mt %>%
   select(County,`YES on INITIATIVE NO. 185`,`NO on INITIATIVE NO. 185`) %>%
-  mutate(State = "Montana") %>%
+  mutate(state = "Montana") %>%
   mutate(elec_date = '11/06/2018') %>%
   rename(votes_for=`YES on INITIATIVE NO. 185`) %>%
   rename(votes_against=`NO on INITIATIVE NO. 185`) %>%
   mutate(total_votes = votes_for + votes_against) %>%
   mutate(share_for = (votes_for / total_votes) * 100) %>%
-  mutate(share_against = (votes_against / total_votes) * 100)
+  mutate(share_against = (votes_against / total_votes) * 100) %>%
+  rename(county = County) %>%
+  slice(-(57))
 
 
   
@@ -82,4 +87,6 @@ nb_dt=nb[318] ##list element with proposition data for Nebraska
 nb_dt1=do.call(rbind, nb_dt)
 #load data
 
+# merging datasets ------------------------------------------------------------------
 
+aca_referendums = rbind( mt_dt, okl_dt, id_dt)
