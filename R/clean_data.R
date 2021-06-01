@@ -84,18 +84,18 @@ mt_dt = mt %>%
 ut = extract_tables("raw_data/2018 General Election Canvass Utah.pdf", pages = 54)
 ut_tb = do.call(rbind, ut)
 nb = extract_tables("raw_data/nebraska_2018_elec.pdf", pages = 65)
-nb_tb1 = do.call(rbind, nb)
+nb_tb = do.call(rbind, nb)
 
 ##nebraska
 
-nb_tb1 = as.data.frame(nb_tb1) ##converting nb_tb1 from matrix to dataframe
-nb_sl = nb_tb1[4:6] ##creating new dataframe with other set of counties from columns 4 to 6
-nb_tb1 = nb_tb1[1:3] ##reducing original table to columns 1 to 3
-nb_tb1 = slice(nb_tb1,-(1:2)) ##removing redundant rows
-nb_dt = rbind(nb_tb1, nb_sl)
+nb_tb = as.data.frame(nb_tb) ##converting nb_tb1 from matrix to dataframe
+nb_sl = nb_tb[4:6] ##creating new dataframe with other set of counties from columns 4 to 6
+nb_tb = nb_tb[1:3] ##reducing original table to columns 1 to 3
+nb_tb = slice(nb_tb,-(1:2)) ##removing redundant rows
+
 
 ##renaming variables to merge using rbind
-nb_tb2 = nb_tb1 %>%
+nb_tb1 = nb_tb %>%
   rename(county = V1) %>%
   rename(votes_for = V2) %>%
   rename(votes_against = V3)
@@ -106,7 +106,7 @@ nb_sl1 = nb_sl %>%
   rename(votes_against = V6) %>%
   slice(-(48))
 
-nb_dt = rbind(nb_tb2, nb_sl1) 
+nb_dt = rbind(nb_tb1, nb_sl1) 
 
 #load data
 
