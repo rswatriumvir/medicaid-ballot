@@ -81,10 +81,10 @@ mt_dt = mt %>%
 
 
 
-ut = extract_tables("raw_data/2018 General Election Canvass Utah.pdf")
-nb = extract_tables("raw_data/nebraska_2018_elec.pdf")
-nb_tb = nb[318] ##list element with proposition data for Nebraska
-nb_tb1 = do.call(rbind, nb_dt)
+ut = extract_tables("raw_data/2018 General Election Canvass Utah.pdf", pages = 54)
+ut = do.call(rbind, ut)
+nb = extract_tables("raw_data/nebraska_2018_elec.pdf", pages = 65)
+nb_tb1 = do.call(rbind, nb)
 
 ##nebraska
 
