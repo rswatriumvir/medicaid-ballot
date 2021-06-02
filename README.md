@@ -18,3 +18,11 @@
 
 - make code conform to tidy style guide (https://style.tidyverse.org/index.html)
 - finish cleaning up the excel files and combine resulting tidy data into one tibble
+
+
+
+## TODO (6/2/2021):
+
+* create folder for output data and output data there as .rds
+* design + implement quality checks
+* figure out how to use tidycensus R package to access county-level census data
