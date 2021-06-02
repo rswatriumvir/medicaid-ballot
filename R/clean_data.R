@@ -139,6 +139,7 @@ nb_sl1 = nb_sl %>%
 nb_tb_fn = rbind(nb_tb1, nb_sl1) 
 nb_tb_fn$votes_for = as.numeric(gsub(",", "", nb_tb_fn$votes_for)) # convert variable from character string to numeric with commas removed
 nb_tb_fn$votes_against = as.numeric(gsub(",", "", nb_tb_fn$votes_against)) #same process
+
 nb_dt = nb_tb_fn %>%
   mutate(state = "Nebraska") %>%
   mutate(elec_date = "11/06/2018") %>%
@@ -151,4 +152,4 @@ nb_dt = nb_tb_fn %>%
 
 ## merging datasets ------------------------------------------------------------------
 
-aca_referendums = rbind( mt_dt, okl_dt, id_dt, nb_dt)
+aca_referendums = rbind(mt_dt, okl_dt, id_dt, nb_dt, me_dt)
