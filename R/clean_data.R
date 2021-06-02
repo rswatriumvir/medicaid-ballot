@@ -3,6 +3,7 @@ library(tidyverse)
 library(readxl)
 library(tabulizer)
 library(tabulizerjars)
+library(sjmisc)
 
 options(scipen = 999) ##eliminates scientific notation, releavent for Idaho's data which was in scientific notation 
 
@@ -71,6 +72,39 @@ mt_dt = mt %>%
   mutate(share_against = (votes_against / total_votes) * 100) %>%
   rename(county = County) %>%
   slice(-(57))
+
+#maine
+me = read_excel("raw_data/maine_prop_results.xlsx")
+me_dt_tn = me %>% #Maine Municipality Level Data
+  select(...1, ...2, `Question 2:  Citizen Initiative`, ...7, ...8) %>%
+  rename(county = ...1) %>%
+  rename(municipality = ...2) %>%
+  rename(votes_for = `Question 2:  Citizen Initiative`) %>%
+  rename(votes_against = ...7) %>%
+  rename(votes_blank = ...8)
+
+me_dt_tn$votes_for = as.numeric(me_dt_tn$votes_for)
+me_dt_tn$votes_against = as.numeric(me_dt_tn$votes_against)
+me_dt_tn$votes_blank = as.numeric(me_dt_tn$votes_blank)
+
+
+me_dt = me_dt_tn %>% #Maine County Level Data
+  slice(-(1)) %>%
+  select(-(county)) %>%
+  select(-(votes_blank)) %>%
+  slice(-(513:514)) %>%
+  rename(county = municipality)%>% #renaming so we can eliminate the towns in this column
+  filter((grepl("County Totals", county) == TRUE)) %>%
+  mutate(total_votes = votes_for+votes_against) %>%
+  mutate(share_for = (votes_for / total_votes) * 100) %>%
+  mutate(share_against = (votes_against / total_votes) * 100) %>%
+  mutate(state = "Maine") %>%
+  mutate(elec_date = "11/07/2017")
+  
+
+me_dt$county = gsub("County Totals", "", me_dt$county)
+me_dt$county = gsub(":", "", me_dt$county)
+  
 
 
   
