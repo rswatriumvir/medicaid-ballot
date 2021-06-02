@@ -4,7 +4,8 @@ library(readxl)
 library(tabulizer)
 library(tabulizerjars)
 library(sjmisc)
-
+library(janitor)
+library(data.table)
 options(scipen = 999) ##eliminates scientific notation, releavent for Idaho's data which was in scientific notation 
 
 # deal with excel -------------------------------------------------------------------
@@ -161,7 +162,17 @@ nb_dt = nb_tb_fn %>%
   mutate(share_against = (votes_against / total_votes) * 100)
   
 
-#load data
+## adding ACS demographic and educational datasets -----------------------------------
+
+'acs_demo_og = read_csv("raw_data/acs_demographics.csv") #original data from ACS demographics
+acs_demo_og = as.data.frame(t(acs_demo_og)) #switching rows and columns
+setDT(acs_demo_og, keep.rownames = TRUE)
+acs_demo = acs_demo_og %>%
+  row_to_names(row_number = 1) 
+acs_demo$Label
+filter((grepl("Percent", Label) == TRUE))'
+
+'acs_demo[[2]]'
 
 ## merging datasets ------------------------------------------------------------------
 
