@@ -105,7 +105,20 @@ me_dt = me_dt_tn %>% #Maine County Level Data
 me_dt$county = gsub("County Totals", "", me_dt$county)
 me_dt$county = gsub(":", "", me_dt$county)
   
+#utah
+ut = read_excel("raw_data/2018 General Election Canvass Utah.xlsx", sheet = "Statewide Ballot Questions", skip = 2)
 
+ut_dt = ut %>%
+  select(County, FOR...6, AGAINST...7) %>% 
+  rename(votes_for = FOR...6) %>%
+  rename(votes_against = AGAINST...7) %>%
+  rename(county = County) %>%
+  mutate(total_votes = votes_for+votes_against) %>%
+  mutate(share_for = (votes_for / total_votes) * 100) %>%
+  mutate(share_against = (votes_against / total_votes) * 100) %>%
+  mutate(state = "Utah") %>%
+  mutate(elec_date = "11/06/2018") %>%
+  slice(-(30:32))
 
   
 
@@ -152,4 +165,4 @@ nb_dt = nb_tb_fn %>%
 
 ## merging datasets ------------------------------------------------------------------
 
-aca_referendums = rbind(mt_dt, okl_dt, id_dt, nb_dt, me_dt)
+aca_referendums = rbind(mt_dt, okl_dt, id_dt, nb_dt, me_dt, ut_dt)
