@@ -23,6 +23,8 @@
 
 ## TODO (6/2/2021):
 
-* create folder for output data and output data there as .rds
-* design + implement quality checks
-* figure out how to use tidycensus R package to access county-level census data
+- [ ] finish cleaning up Missouri and merge into bigger dataset
+- [x] create folder for output data and output data there as .rds
+- [ ] design + implement quality checks
+- [ ] figure out how to use tidycensus R package to access county-level census data
+- [ ] merge aca_refs with tidycensus data in merge_census.R
