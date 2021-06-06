@@ -2,6 +2,8 @@
 
 
 
+![](figures/vote-dist.png)
+
 
 
 ## TODO (5/20/2021):
