@@ -19,7 +19,9 @@ acs_demo_mt = read_csv("raw_data/ACS_demo_mt.csv")
 acs_demo_id = read_csv("raw_data/ACS_demo_id.csv")
 acs_demo_me = read_csv("raw_data/ACS_demo_me.csv")
 acs_demo_ne = read_csv("raw_data/ACS_demo_ne.csv") 
+acs_educ_id = read.csv("raw_data/ACS_educ_id.csv")
 
+## adding ACS demographic essays -------------------------------------------------------
 #utah
 acs_demo_ut = as.data.frame(t(acs_demo_ut)) #switching rows and columns
 setDT(acs_demo_ut, keep.rownames = TRUE)
@@ -209,6 +211,20 @@ dem_ne0[,2:12] = lapply(dem_ne0[,2:12], as.numeric)
 dem_ne = dem_ne0 %>%
   mutate(above_65 = (above_65 / population) * 100) %>% 
   mutate(county = (gsub("County, Nebraska!!Percent", "", county)))  
+
+#ACS educational data ----------------------------------------------------------------
+acs_educ_id = as.data.frame(t(acs_educ_id)) #switching rows and columns
+setDT(acs_educ_id, keep.rownames = TRUE)
+educ_id0 = acs_educ_id %>%
+  select(rn, V16, V63) %>%
+  rename(county = rn) %>%
+  rename(bachelors_25 = V16) %>%
+  rename(median_income = V63) %>%
+  slice(-(1)) %>%
+  filter((grepl("Total..Estimate", county))|(grepl("Percent..Estimate", county)) ==TRUE) 
+
+  
+
 
 #merging demographic datasets
 acs_demo = rbind(dem_ut, dem_id, dem_ne, dem_me, dem_mt, dem_ok, dem_mo)
