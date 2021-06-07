@@ -27,7 +27,6 @@ okl_dt = okl %>%
   mutate(share_against = (votes_against / total_votes) * 100) 
 
 
-
 ## idaho
 
 # original file has useless first five rows; skip them
@@ -47,7 +46,6 @@ id_dt = id %>%
   rename(county = Counties) %>%
   slice(-(45:47))
 
-  
   
   
   
@@ -87,8 +85,7 @@ me_dt_tn = me %>% #Maine Municipality Level Data
 me_dt_tn$votes_for = as.numeric(me_dt_tn$votes_for)
 me_dt_tn$votes_against = as.numeric(me_dt_tn$votes_against)
 me_dt_tn$votes_blank = as.numeric(me_dt_tn$votes_blank)
-
-
+me_dt_tn$municipality[202] = "Kennebec County Totals" #spelling error for Kennebec County
 me_dt = me_dt_tn %>% #Maine County Level Data
   slice(-(1)) %>%
   select(-(county)) %>%
