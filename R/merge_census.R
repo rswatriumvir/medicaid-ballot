@@ -5,7 +5,9 @@ library(tabulizerjars)
 library(sjmisc)
 library(janitor)
 library(data.table)
+library(tidycensus)
 
+census_api_key("cbb745d65863b387da6bb0fc1cb9673540b32726",install = TRUE)
 # load data
 df = read_rds("output_data/aca_refs.rds")
 
@@ -20,6 +22,8 @@ acs_demo_id = read_csv("raw_data/ACS_demo_id.csv")
 acs_demo_me = read_csv("raw_data/ACS_demo_me.csv")
 acs_demo_ne = read_csv("raw_data/ACS_demo_ne.csv") 
 acs_educ_id = read.csv("raw_data/ACS_educ_id.csv")
+acs_educ_me = read.csv("raw_data/ACS_educ_me.csv")
+acs_educ_mo = read.csv("raw_data/ACS_educ_mo.csv")
 
 ## adding ACS demographic essays -------------------------------------------------------
 #utah
@@ -221,7 +225,8 @@ educ_id0 = acs_educ_id %>%
   rename(bachelors_25 = V16) %>%
   rename(median_income = V63) %>%
   slice(-(1)) %>%
-  filter((grepl("Total..Estimate", county))|(grepl("Percent..Estimate", county)) ==TRUE) 
+  filter((grepl("Total..Estimate", county))|(grepl("Percent..Estimate", county)) ==TRUE) %>%
+  pivot_wider(names_from = )
 
   
 
