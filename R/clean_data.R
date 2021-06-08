@@ -6,6 +6,11 @@ library(tabulizerjars)
 library(sjmisc)
 library(janitor)
 library(data.table)
+library(tidycensus)
+
+census_api_key("cbb745d65863b387da6bb0fc1cb9673540b32726")
+
+
 options(scipen = 999) ##eliminates scientific notation, releavent for Idaho's data which was in scientific notation 
 
 # deal with excel -------------------------------------------------------------------
@@ -297,11 +302,14 @@ nb_dt = nb_tb_fn %>%
   
 
 
+## loading American Community Survey data ----------------------------------------------
+
+acs_data = get_acs(geography = "county", year = 2019)
+var_list <- load_variables(2019, "acs5")
 
 
 
-
-
+## Quality Checks and Binding Data -----------------------------------------------------
 
 # bind all the data
 aca_refs = rbind(mt_dt, okl_dt, id_dt, nb_dt, me_dt, ut_dt, mo_dt) #Affordable Care Act Referendums 
