@@ -23,7 +23,7 @@ acs_demo_me = read_csv("raw_data/ACS_demo_me.csv")
 acs_demo_ne = read_csv("raw_data/ACS_demo_ne.csv") 
 acs_educ_id = read.csv("raw_data/ACS_educ_id.csv")
 acs_educ_me = read.csv("raw_data/ACS_educ_me.csv")
-acs_educ_mo = read.csv("raw_data/ACS_educ_mo.csv")
+acs_educ_mo = read.csv("raw_data/acs_educ_mo.csv")
 
 ## adding ACS demographic essays -------------------------------------------------------
 #utah
@@ -217,16 +217,64 @@ dem_ne = dem_ne0 %>%
   mutate(county = (gsub("County, Nebraska!!Percent", "", county)))  
 
 #ACS educational data ----------------------------------------------------------------
+#Idaho
 acs_educ_id = as.data.frame(t(acs_educ_id)) #switching rows and columns
 setDT(acs_educ_id, keep.rownames = TRUE)
 educ_id0 = acs_educ_id %>%
-  select(rn, V16, V63) %>%
+  select(rn, V7, V16, V63) %>%
   rename(county = rn) %>%
-  rename(bachelors_25 = V16) %>%
+  filter((grepl("Total..Estimate", county)) == TRUE) %>%
+  slice(-(1)) 
+
+educ_id0[,2:4] = lapply(educ_id0[,2:4], function(y) gsub(",", "", y))
+educ_id0[,2:4] = lapply(educ_id0[,2:4], as.numeric)
+
+educ_id = educ_id0 %>%
+  mutate(bachelors_25 = (V16 / V7) * 100) %>%
   rename(median_income = V63) %>%
+  select(county, median_income, bachelors_25) %>%
+  mutate(county = (gsub(".County..Idaho..Total..Estimate", "", county))) 
+
+#Missouri
+acs_educ_mo = as.data.frame(t(acs_educ_mo)) #switching rows and columns
+setDT(acs_educ_mo, keep.rownames = TRUE)
+
+educ_mo0 = acs_educ_mo %>%
+  select(NAME, S1501_C01_006E, S1501_C01_012E, S1501_C01_059E) %>%
+  rename(median_income = S1501_C01_059E) %>%
+  rename(county = NAME) %>%
+  mutate(county = (gsub("County, Missouri", "", county))) 
+
+educ_mo0[,2:4] = lapply(educ_mo0[,2:4], function(y) gsub(",", "", y))
+educ_mo0[,2:4] = lapply(educ_mo0[,2:4], as.numeric)
+
+educ_mo = educ_mo0 %>%
+  mutate(bachelors_25 = (S1501_C01_012E / S1501_C01_006E) * 100) %>%
   slice(-(1)) %>%
-  filter((grepl("Total..Estimate", county))|(grepl("Percent..Estimate", county)) ==TRUE) %>%
-  pivot_wider(names_from = )
+  select(county, bachelors_25, median_income)
+  
+educ_mo$county[115] = "St. Louis City"
+
+#Maine
+acs_educ_me = as.data.frame(t(acs_educ_me)) #switching rows and columns
+setDT(acs_educ_me, keep.rownames = TRUE)
+educ_me0 = acs_educ_me %>%
+  select(rn, V7, V16, V63) %>%
+  rename(county = rn) %>%
+  filter((grepl("Total..Estimate", county)) == TRUE) %>%
+  slice(-(1)) 
+
+educ_me0[,2:4] = lapply(educ_me0[,2:4], function(y) gsub(",", "", y))
+educ_me0[,2:4] = lapply(educ_me0[,2:4], as.numeric)
+
+educ_me = educ_me0 %>%
+  mutate(bachelors_25 = (V16 / V7) * 100) %>%
+  rename(median_income = V63) %>%
+  select(county, median_income, bachelors_25) %>%
+  mutate(county = (gsub(".County..Maine..Total..Estimate", "", county))) 
+
+
+
 
   
 
