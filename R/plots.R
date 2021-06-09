@@ -2,15 +2,19 @@
 library(tidyverse)
 library(ggbeeswarm)
 library(hrbrthemes)
+library(ggrepel)
 
 # read data
 df = read_rds("output_data/aca_refs.rds")
 
 
-# labels for big cities
-big_city = df %>% 
+# labels for overall margin
+margin = df %>% 
   group_by(state) %>% 
-  filter(total_votes == max(total_votes))
+  summarise(total_votes = sum(total_votes), 
+            votes_for = sum(votes_for)) %>% 
+  mutate(pct = votes_for/total_votes*100) %>% 
+  mutate(label = paste0(state, ":", "\n", round(pct, 1), "%"))
 
 
 # make swarm plot
@@ -28,11 +32,7 @@ ggplot(df, aes(x = state, y = share_for,
        y = "% of voters in favor of expansion") + 
   scale_y_continuous(limits = c(0, 100), 
                      labels = scales::percent_format(scale = 1)) + 
-  geom_hline(yintercept = 50, lty = 2, size = 1) + 
-  geom_label_repel(data = big_city, aes(x = state, y = share_for, 
-                                        label = county, color = state), 
-                   max.overlaps = Inf, size = 3, fill = "white", 
-                   box.padding = 0) + 
+  geom_hline(yintercept = 50, lty = 2, size = 1) +
   scale_color_viridis_d(option = "inferno", end = .8)
 
 
@@ -57,12 +57,13 @@ ggplot(df, aes(x = state, y = share_for,
     alpha = .3,
     outlier.shape = NA
   ) + 
-  geom_point(
-    size = 1.3,
-    alpha = .3,
-    position = position_jitter(
-      seed = 1, width = .1
-    )
+  gghalves::geom_half_point(
+    ## draw jitter on the left
+    side = "l", 
+    ## control range of jitter
+    range_scale = .4, 
+    ## add some transparency
+    alpha = .3
   ) + 
   coord_flip() + 
   theme_ipsum() + 
@@ -76,4 +77,3 @@ ggplot(df, aes(x = state, y = share_for,
                      labels = scales::percent_format(scale = 1)) + 
   geom_hline(yintercept = 50, lty = 2, size = 1) + 
   scale_color_viridis_d(option = "inferno", end = .8)
-
