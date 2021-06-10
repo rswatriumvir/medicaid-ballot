@@ -30,6 +30,9 @@ acs_educ_ne = read.csv("raw_data/acs_educ_ne.csv")
 acs_educ_ok = read.csv("raw_data/acs_educ_ok.csv")
 acs_educ_mt = read.csv("raw_data/acs_educ_mt.csv")
 
+#original election data
+county_elections = read.csv("raw_data/countypres_2000-2016.csv")
+
 ## adding ACS demographic essays -------------------------------------------------------
 #utah
 acs_demo_ut = as.data.frame(t(acs_demo_ut)) #switching rows and columns
@@ -56,7 +59,8 @@ dem_ut0[,2:12] = lapply(dem_ut0[,2:12], as.numeric)
 
 dem_ut = dem_ut0 %>%
   mutate(above_65 = (above_65 / population) * 100) %>% 
-  mutate(county = (gsub("County, Utah!!Percent", "", county))) 
+  mutate(county = (gsub("County, Utah!!Percent", "", county))) %>%
+  mutate(state = "UT")
 
 
 #Missouri 
@@ -84,7 +88,8 @@ dem_mo0[,2:12] = lapply(dem_mo0[,2:12], as.numeric)
 
 dem_mo = dem_mo0 %>%
   mutate(above_65 = (above_65 / population) * 100) %>% 
-  mutate(county = (gsub("County, Missouri!!Percent", "", county)))  
+  mutate(county = (gsub("County, Missouri!!Percent", "", county))) %>%
+  mutate(state = "MO")
 
 #Oklahoma
 acs_demo_ok = as.data.frame(t(acs_demo_ok)) #switching rows and columns
@@ -103,7 +108,9 @@ dem_ok0 = acs_demo_ok %>%
   rename(asian = V84) %>%
   rename(pacific_is = V85) %>% #Native Hawaiian and Pacific Islander alone
   rename(multi_racial = V87) %>%
-  filter(grepl("Percent", county)==TRUE) 
+  filter(grepl("Percent", county)==TRUE) %>%
+  mutate(state = "OK")
+  
 
 dem_ok0[,2:12] = lapply(dem_ok0[,2:12], function(y) gsub(",", "", y))
 dem_ok0[,2:12] = lapply(dem_ok0[,2:12], function(y) gsub("%", "", y))
@@ -138,7 +145,8 @@ dem_mt0[,2:12] = lapply(dem_mt0[,2:12], as.numeric)
 
 dem_mt = dem_mt0 %>%
   mutate(above_65 = (above_65 / population) * 100) %>% 
-  mutate(county = (gsub("County, Montana!!Percent", "", county)))  
+  mutate(county = (gsub("County, Montana!!Percent", "", county))) %>%
+  mutate(state = "MT")
 
 #Idaho
 acs_demo_id = as.data.frame(t(acs_demo_id)) #switching rows and columns
@@ -165,7 +173,8 @@ dem_id0[,2:12] = lapply(dem_id0[,2:12], as.numeric)
 
 dem_id = dem_id0 %>%
   mutate(above_65 = (above_65 / population) * 100) %>% 
-  mutate(county = (gsub("County, Idaho!!Percent", "", county)))  
+  mutate(county = (gsub("County, Idaho!!Percent", "", county))) %>%
+  mutate(state = "ID")
 
 #Maine
 acs_demo_me = as.data.frame(t(acs_demo_me)) #switching rows and columns
@@ -192,7 +201,8 @@ dem_me0[,2:12] = lapply(dem_me0[,2:12], as.numeric)
 
 dem_me = dem_me0 %>%
   mutate(above_65 = (above_65 / population) * 100) %>% 
-  mutate(county = (gsub("County, Maine!!Percent", "", county)))  
+  mutate(county = (gsub("County, Maine!!Percent", "", county))) %>%
+  mutate(state = "ME")
 
 #Nebraska
 acs_demo_ne = as.data.frame(t(acs_demo_ne)) #switching rows and columns
@@ -219,7 +229,8 @@ dem_ne0[,2:12] = lapply(dem_ne0[,2:12], as.numeric)
 
 dem_ne = dem_ne0 %>%
   mutate(above_65 = (above_65 / population) * 100) %>% 
-  mutate(county = (gsub("County, Nebraska!!Percent", "", county)))  
+  mutate(county = (gsub("County, Nebraska!!Percent", "", county))) %>%
+  mutate(state = "NE")
 
 #ACS educational data ----------------------------------------------------------------
 #Idaho
@@ -237,7 +248,8 @@ educ_id = educ_id0 %>%
   mutate(bachelors_25 = (V16 / V7) * 100) %>%
   rename(median_income = V63) %>%
   select(county, median_income, bachelors_25) %>%
-  mutate(county = (gsub(".County..Idaho..Total..Estimate", "", county))) 
+  mutate(county = (gsub(".County..Idaho..Total..Estimate", "", county))) %>%
+  mutate(state = "ID")
 
 #Missouri
 setDT(acs_educ_mo, keep.rownames = TRUE)
@@ -254,11 +266,13 @@ educ_mo0[,2:4] = lapply(educ_mo0[,2:4], as.numeric)
 educ_mo = educ_mo0 %>%
   mutate(bachelors_25 = (S1501_C01_012E / S1501_C01_006E) * 100) %>%
   slice(-(1)) %>%
-  select(county, bachelors_25, median_income)
+  select(county, bachelors_25, median_income) %>%
+  mutate(state = "MO")
   
 educ_mo$county[115] = "St. Louis City"
 
 #Maine 
+acs_educ_me = as.data.frame(t(acs_educ_me))
 setDT(acs_educ_me, keep.rownames = TRUE)
 educ_me0 = acs_educ_me %>%
   select(rn, V7, V16, V63) %>%
@@ -272,7 +286,8 @@ educ_me = educ_me0 %>%
   mutate(bachelors_25 = (V16 / V7) * 100) %>%
   rename(median_income = V63) %>%
   select(county, median_income, bachelors_25) %>%
-  mutate(county = (gsub(".County..Maine..Total..Estimate", "", county))) 
+  mutate(county = (gsub(".County..Maine..Total..Estimate", "", county))) %>%
+  mutate(state = "ME")
 
 
 #Utah
@@ -291,7 +306,8 @@ educ_ut = educ_ut0 %>%
   mutate(bachelors_25 = (V16 / V7) * 100) %>%
   rename(median_income = V63) %>%
   select(county, median_income, bachelors_25) %>%
-  mutate(county = (gsub(".County..Utah..Total..Estimate", "", county))) 
+  mutate(county = (gsub(".County..Utah..Total..Estimate", "", county))) %>%
+  mutate(state = "UT")
   
 #Oklahoma
 acs_educ_ok = as.data.frame(t(acs_educ_ok)) #switching rows and columns
@@ -308,7 +324,8 @@ educ_ok = educ_ok0 %>%
   mutate(bachelors_25 = (V16 / V7) * 100) %>%
   rename(median_income = V63) %>%
   select(county, median_income, bachelors_25) %>%
-  mutate(county = (gsub(".County..Oklahoma..Total..Estimate", "", county))) 
+  mutate(county = (gsub(".County..Oklahoma..Total..Estimate", "", county))) %>%
+  mutate(state = "OK")
 
 #Montana
 acs_educ_mt = as.data.frame(t(acs_educ_mt)) #switching rows and columns
@@ -325,7 +342,8 @@ educ_mt = educ_mt0 %>%
   mutate(bachelors_25 = (V16 / V7) * 100) %>%
   rename(median_income = V63) %>%
   select(county, median_income, bachelors_25) %>%
-  mutate(county = (gsub(".County..Montana..Total..Estimate", "", county))) 
+  mutate(county = (gsub(".County..Montana..Total..Estimate", "", county))) %>%
+  mutate(state = "MT")
 
 #Nebraska 
 setDT(acs_educ_ne, keep.rownames = TRUE)
@@ -342,9 +360,22 @@ educ_ne0[,2:4] = lapply(educ_ne0[,2:4], as.numeric)
 educ_ne = educ_ne0 %>%
   mutate(bachelors_25 = (S1501_C01_012E / S1501_C01_006E) * 100) %>%
   slice(-(1)) %>%
-  select(county, bachelors_25, median_income)
+  select(county, bachelors_25, median_income) %>%
+  mutate(state = "NE")
+
+#filter previous elections
+elec_2016 = county_elections %>%
+  filter(state_po == "ME"| state_po == "MT"| state_po == "UT"| state_po == "ID"| state_po == "NE"| state_po == "OK"| state_po == "MO") %>%
+  filter(year == 2016) %>%
+  filter(party == "democrat" | party == "republican") %>%
+  mutate(percentage = (candidatevotes / totalvotes) * 100) %>%
+  select(state_po, county, percentage, party) %>%
+  pivot_wider(names_from = party, values_from = percentage) %>%
+  slice(-(325))
 
 #merging educational & demographic datasets --------------------------------------------
 
 acs_demo = rbind(dem_ut, dem_id, dem_ne, dem_me, dem_mt, dem_ok, dem_mo)
 acs_educ = rbind(educ_ut, educ_id, educ_ne, educ_me, educ_mt, educ_ok, educ_mo)
+
+acs_final = merge(acs_demo, acs_educ, by = c("county", "state"))
