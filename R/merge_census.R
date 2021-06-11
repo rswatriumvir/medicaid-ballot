@@ -6,6 +6,7 @@ library(sjmisc)
 library(janitor)
 library(data.table)
 library(tidycensus)
+library(stringr)
 
 
 # load data
@@ -14,21 +15,21 @@ df = read_rds("output_data/aca_refs.rds")
 ## adding ACS demographic and educational datasets -----------------------------------
 
 #original data from ACS demographics
-acs_demo_ut = read_csv("raw_data/ACS_demo_ut.csv")
-acs_demo_mo = read_csv("raw_data/ACS_demo_mo.csv")
-acs_demo_ok = read_csv("raw_data/ACS_demo_ok.csv") 
-acs_demo_mt = read_csv("raw_data/ACS_demo_mt.csv")
-acs_demo_id = read_csv("raw_data/ACS_demo_id.csv")
-acs_demo_me = read_csv("raw_data/ACS_demo_me.csv")
-acs_demo_ne = read_csv("raw_data/ACS_demo_ne.csv") 
+acs_demo_ut = read.csv("raw_data/ACS_demo_ut.csv", strip.white=TRUE)
+acs_demo_mo = read.csv("raw_data/ACS_demo_mo.csv", strip.white=TRUE)
+acs_demo_ok = read.csv("raw_data/ACS_demo_ok.csv", strip.white=TRUE)
+acs_demo_mt = read.csv("raw_data/ACS_demo_mt.csv", strip.white=TRUE)
+acs_demo_id = read.csv("raw_data/ACS_demo_id.csv", strip.white=TRUE)
+acs_demo_me = read.csv("raw_data/ACS_demo_me.csv", strip.white=TRUE)
+acs_demo_ne = read.csv("raw_data/ACS_demo_ne.csv", strip.white=TRUE) 
 
-acs_educ_id = read.csv("raw_data/ACS_educ_id.csv")
-acs_educ_me = read.csv("raw_data/ACS_educ_me.csv")
-acs_educ_mo = read.csv("raw_data/acs_educ_mo.csv")
-acs_educ_ut = read.csv("raw_data/acs_educ_ut.csv")
-acs_educ_ne = read.csv("raw_data/acs_educ_ne.csv")
-acs_educ_ok = read.csv("raw_data/acs_educ_ok.csv")
-acs_educ_mt = read.csv("raw_data/acs_educ_mt.csv")
+acs_educ_id = read.csv("raw_data/ACS_educ_id.csv", strip.white=TRUE)
+acs_educ_me = read.csv("raw_data/ACS_educ_me.csv", strip.white=TRUE)
+acs_educ_mo = read.csv("raw_data/acs_educ_mo.csv", strip.white=TRUE)
+acs_educ_ut = read.csv("raw_data/acs_educ_ut.csv", strip.white=TRUE)
+acs_educ_ne = read.csv("raw_data/acs_educ_ne.csv", strip.white=TRUE)
+acs_educ_ok = read.csv("raw_data/acs_educ_ok.csv", strip.white=TRUE)
+acs_educ_mt = read.csv("raw_data/acs_educ_mt.csv", strip.white=TRUE)
 
 #original election data
 county_elections = read.csv("raw_data/countypres_2000-2016.csv")
@@ -59,7 +60,7 @@ dem_ut0[,2:12] = lapply(dem_ut0[,2:12], as.numeric)
 
 dem_ut = dem_ut0 %>%
   mutate(above_65 = (above_65 / population) * 100) %>% 
-  mutate(county = (gsub("County, Utah!!Percent", "", county))) %>%
+  mutate(county = (gsub(".County..Utah..Percent", "", county))) %>%
   mutate(state = "UT")
 
 
@@ -88,7 +89,7 @@ dem_mo0[,2:12] = lapply(dem_mo0[,2:12], as.numeric)
 
 dem_mo = dem_mo0 %>%
   mutate(above_65 = (above_65 / population) * 100) %>% 
-  mutate(county = (gsub("County, Missouri!!Percent", "", county))) %>%
+  mutate(county = (gsub(".County..Missouri..Percent", "", county))) %>%
   mutate(state = "MO")
 
 #Oklahoma
@@ -118,7 +119,7 @@ dem_ok0[,2:12] = lapply(dem_ok0[,2:12], as.numeric)
 
 dem_ok = dem_ok0 %>%
   mutate(above_65 = (above_65 / population) * 100) %>% 
-  mutate(county = (gsub("County, Oklahoma!!Percent", "", county)))  
+  mutate(county = (gsub(".County..Oklahoma..Percent", "", county)))  
 
 #Montana
 acs_demo_mt = as.data.frame(t(acs_demo_mt)) #switching rows and columns
@@ -145,7 +146,7 @@ dem_mt0[,2:12] = lapply(dem_mt0[,2:12], as.numeric)
 
 dem_mt = dem_mt0 %>%
   mutate(above_65 = (above_65 / population) * 100) %>% 
-  mutate(county = (gsub("County, Montana!!Percent", "", county))) %>%
+  mutate(county = (gsub(".County..Montana..Percent", "", county))) %>%
   mutate(state = "MT")
 
 #Idaho
@@ -173,7 +174,7 @@ dem_id0[,2:12] = lapply(dem_id0[,2:12], as.numeric)
 
 dem_id = dem_id0 %>%
   mutate(above_65 = (above_65 / population) * 100) %>% 
-  mutate(county = (gsub("County, Idaho!!Percent", "", county))) %>%
+  mutate(county = (gsub(".County..Idaho..Percent", "", county))) %>%
   mutate(state = "ID")
 
 #Maine
@@ -201,7 +202,7 @@ dem_me0[,2:12] = lapply(dem_me0[,2:12], as.numeric)
 
 dem_me = dem_me0 %>%
   mutate(above_65 = (above_65 / population) * 100) %>% 
-  mutate(county = (gsub("County, Maine!!Percent", "", county))) %>%
+  mutate(county = (gsub(".County..Maine..Percent", "", county))) %>%
   mutate(state = "ME")
 
 #Nebraska
@@ -229,7 +230,7 @@ dem_ne0[,2:12] = lapply(dem_ne0[,2:12], as.numeric)
 
 dem_ne = dem_ne0 %>%
   mutate(above_65 = (above_65 / population) * 100) %>% 
-  mutate(county = (gsub("County, Nebraska!!Percent", "", county))) %>%
+  mutate(county = (gsub(".County..Nebraska..Percent", "", county))) %>%
   mutate(state = "NE")
 
 #ACS educational data ----------------------------------------------------------------
@@ -258,7 +259,7 @@ educ_mo0 = acs_educ_mo %>%
   select(NAME, S1501_C01_006E, S1501_C01_012E, S1501_C01_059E) %>%
   rename(median_income = S1501_C01_059E) %>%
   rename(county = NAME) %>%
-  mutate(county = (gsub("County, Missouri", "", county))) 
+  mutate(county = (gsub(" County, Missouri", "", county))) 
 
 educ_mo0[,2:4] = lapply(educ_mo0[,2:4], function(y) gsub(",", "", y))
 educ_mo0[,2:4] = lapply(educ_mo0[,2:4], as.numeric)
@@ -352,7 +353,7 @@ educ_ne0 = acs_educ_ne %>%
   select(NAME, S1501_C01_006E, S1501_C01_012E, S1501_C01_059E) %>%
   rename(median_income = S1501_C01_059E) %>%
   rename(county = NAME) %>%
-  mutate(county = (gsub("County, Nebraska", "", county))) 
+  mutate(county = (gsub(" County, Nebraska", "", county))) 
 
 educ_ne0[,2:4] = lapply(educ_ne0[,2:4], function(y) gsub(",", "", y))
 educ_ne0[,2:4] = lapply(educ_ne0[,2:4], as.numeric)
@@ -371,11 +372,74 @@ elec_2016 = county_elections %>%
   mutate(percentage = (candidatevotes / totalvotes) * 100) %>%
   select(state_po, county, percentage, party) %>%
   pivot_wider(names_from = party, values_from = percentage) %>%
-  slice(-(325))
+  slice(-(325)) %>%
+  rename(state = state_po)
+
+# fixing formatting in dem_ne & dem_mo--------------------------------------------------------
+dem_ne[7]$county = "Box Butte"
+dem_ne[52]$county = "Keya Paha"
+dem_ne[73]$county = "Red Willow"
+dem_ne[79]$county = "Scotts Bluff"
+
+dem_mo[16]$county = "Cape Girardeau"
+dem_mo[72]$county = "New Madrid"
+dem_mo[92]$county = "St. Charles"
+dem_mo[93]$county = "St. Clair"
+dem_mo[94]$county = "Ste. Genevieve"
+dem_mo[95]$county = "St. Francois"
+dem_mo[96]$county = "St. Louis"
+dem_mo[115]$county = "St. Louis City"
 
 #merging educational & demographic datasets --------------------------------------------
 
 acs_demo = rbind(dem_ut, dem_id, dem_ne, dem_me, dem_mt, dem_ok, dem_mo)
 acs_educ = rbind(educ_ut, educ_id, educ_ne, educ_me, educ_mt, educ_ok, educ_mo)
 
+#fixing formatting issues in acs_educ 
+acs_educ[33]$county = "Bear Lake"
+acs_educ[184]$county = "Big Horn"
+acs_educ[2]$county = "Box Elder"
+acs_educ[194]$county = "Deer Lodge"
+acs_educ[201]$county = "Golden Valley"
+acs_educ[205]$county = "Judith Basin"
+acs_educ[278]$county = "Le Flore"
+acs_educ[207]$county = "Lewis and Clark"
+acs_educ[64]$county = "Nez Perce"
+acs_educ[220]$county = "Powder River"
+acs_educ[303]$county = "Roger Mills"
+acs_educ[18]$county = "Salt Lake"
+acs_educ[19]$county = "San Juan"
+acs_educ[229]$county = "Silver Bow"
+acs_educ[231]$county = "Sweet Grass"
+acs_educ[71]$county = "Twin Falls"
+
+acs_demo[33]$county = "Bear Lake"
+acs_demo[184]$county = "Big Horn"
+acs_demo[2]$county = "Box Elder"
+acs_demo[194]$county = "Deer Lodge"
+acs_demo[201]$county = "Golden Valley"
+acs_demo[205]$county = "Judith Basin"
+acs_demo[278]$county = "Le Flore"
+acs_demo[207]$county = "Lewis and Clark"
+acs_demo[64]$county = "Nez Perce"
+acs_demo[220]$county = "Powder River"
+acs_demo[303]$county = "Roger Mills"
+acs_demo[18]$county = "Salt Lake"
+acs_demo[19]$county = "San Juan"
+acs_demo[229]$county = "Silver Bow"
+acs_demo[231]$county = "Sweet Grass"
+acs_demo[71]$county = "Twin Falls"
+
+
 acs_final = merge(acs_demo, acs_educ, by = c("county", "state"))
+
+elec_2016 = as.data.frame(elec_2016) #converting 2016 election data from table to dataframe
+
+acs_final[373]$county = "St. Louis County" #St Louis City is diff from St Louis County
+
+demog_elec = merge(acs_final, elec_2016, by = c("county", "state")) #demographics and electoral data
+
+aca_refs = merge(df, demog_elec, by = c("county", "state"))
+
+
+
