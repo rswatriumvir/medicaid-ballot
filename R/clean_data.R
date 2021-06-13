@@ -302,11 +302,6 @@ nb_dt = nb_tb_fn %>%
   
 
 
-## loading American Community Survey data ----------------------------------------------
-
-acs_data = get_acs(geography = "county", year = 2019)
-var_list <- load_variables(2019, "acs5")
-
 
 
 ## Quality Checks and Binding Data -----------------------------------------------------
@@ -331,4 +326,5 @@ aca_refs$share_against <= 100
 
 # output table
 write_rds(aca_refs, "output_data/aca_refs.rds")
+write_rds(me_dt_tn, "output_data/me_munic") 
 
