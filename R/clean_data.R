@@ -8,8 +8,6 @@ library(janitor)
 library(data.table)
 library(tidycensus)
 
-census_api_key("cbb745d65863b387da6bb0fc1cb9673540b32726")
-
 
 options(scipen = 999) ##eliminates scientific notation, releavent for Idaho's data which was in scientific notation 
 
