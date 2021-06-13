@@ -451,7 +451,9 @@ df[96,]$county = "le flore"
 
 aca_refs = merge(df, demog_elec, by = c("county", "state"))
 
+##write final rds script
 
+write_rds(aca_refs, "output_data/aca_refs_final.rds")
 
 
 
