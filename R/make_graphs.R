@@ -48,6 +48,10 @@ ggplot(rural, aes(x = non_white, y = share_for))+ geom_point() + geom_smooth(met
 
 ggplot(rural, aes(x = bachelors_25, y = share_for))+ geom_point() + geom_smooth(method = "lm", formula = y~x) + labs(x = "Education", y = "Yes Vote Percentage", title = "Yes Vote Vs Education in Rural Areas") 
 
+rural_states = rural %>%
+  group_by(state) %>%
+  summarise(yes_diff = mean(yes_diff), share_for = mean(share_for))
+
 
 
 
