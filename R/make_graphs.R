@@ -46,9 +46,9 @@ ggplot(rural, aes(x = population, y = share_for))+ geom_point() + geom_smooth(me
 
 ggplot(rural, aes(x = non_white, y = share_for))+ geom_point() + geom_smooth(method = "lm", formula = y~x) + labs(x = "Non_White", y = "Yes Vote Percentage", title = "Yes Vote Vs Non_White in Rural Areas") 
 
-rural %>%
-  filter(yes_diff > 10) %>%
-  ggplot(aes(x = non_white, y = share_for))+ geom_point() + geom_smooth(method = "lm", formula = y~x) + labs(x = "Non_White", y = "Yes Vote Percentage", title = "Yes Vote Vs Non_White in Rural Areas") 
+ggplot(rural, aes(x = bachelors_25, y = share_for))+ geom_point() + geom_smooth(method = "lm", formula = y~x) + labs(x = "Education", y = "Yes Vote Percentage", title = "Yes Vote Vs Education in Rural Areas") 
+
+
 
 
 
