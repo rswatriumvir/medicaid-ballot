@@ -1,4 +1,4 @@
-# load libraries ---------------------------------------------------------------------------
+# load libraries ----------------------------------------------------------------------
 library(tidyverse)
 library(readxl)
 library(tabulizer)
@@ -7,7 +7,7 @@ library(sjmisc)
 library(janitor)
 library(data.table)
 
-# load data --------------------------------------------------------------------------------
+# load data -----------------------------------------------------------------------------
 df = read_rds("output_data/aca_refs_final.rds")
 
 
@@ -52,6 +52,20 @@ rural_states = rural %>%
   group_by(state) %>%
   summarise(yes_diff = mean(yes_diff), share_for = mean(share_for))
 
+#Rural Maine, Idaho, and Utah seem to have the largest share of voters for the expansion. Maine is a swing state that leans slightly left, but Idaho and Utah are both deep red states with large Mormon populations. Mormon populations tend to be a lot more supportive of private charity. Maybe the reason for Idaho and Utah's large rural voter bases supporting the expansion might be the religious angle? 
+
+##see how counties with Mormon population vs non-Mormon population in Idaho compare
+mormon_idaho = df %>%
+  filter(state == "Idaho") %>%
+  filter(county == "fremont"|county == "bingham"|county == "madison"|county == "bear lake"|county == "franklin"|county == "oneida"|county == "caribou"|county == "bannock"|county == "cassia"|county == "butte"|county == "jefferson"|county == "bonneville") %>%
+  summarise(yes_diff = mean(yes_diff), share_for = mean(share_for))
+
+non_mormon_idaho = df %>%
+  filter(state == "Idaho") %>%
+  filter(county != "fremont"|county != "bingham"|county != "madison"|county != "bear lake"|county != "franklin"|county != "oneida"|county != "caribou"|county != "bannock"|county != "cassia"|county != "butte"|county != "jefferson"|county != "bonneville") %>%
+  summarise(yes_diff = mean(yes_diff), share_for = mean(share_for))
+
+#not a large diff, Non-Mormon counties actually have higher percentage for Yes votes
 
 
 
