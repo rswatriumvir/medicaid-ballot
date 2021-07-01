@@ -6,12 +6,13 @@ library(tabulizerjars)
 library(sjmisc)
 library(janitor)
 library(data.table)
+library(ggrepel)
 
 # load data -----------------------------------------------------------------------------
 df = read_rds("output_data/aca_refs_final.rds")
 
 
-#Identity outlier counties in terms of past politics ---------------------------------------
+#Identity outlier counties in terms of past politics ------------------------------------
 
 #Yes for expanding Medicaid is generally associated with Dem leaning voters, vice-versa for Republicans 
 
@@ -24,10 +25,10 @@ ot_list = df %>% #outlier list
 
 
 
-ggplot(ot_list, aes(x = democrat, y = yes_diff)) + geom_point() + labs(x = "Democratic Vote Share, 2016 Presidential", y = "Margin Between Yes Vote and 2016", title = "Yes Margin Vs 2016 Dem Presidential Vote") + geom_smooth(method = "lm", formula = y~x)
+ggplot(ot_list, aes(x = democrat, y = yes_diff) + geom_point() + labs(x = "Democratic Vote Share, 2016 Presidential", y = "Margin Between Yes Vote and 2016", title = "Yes Margin Vs 2016 Dem Presidential Vote") + geom_smooth(method = "lm", formula = y~x)
 
 #plotting education polarization, recently higher educated counties have begun to support dems
-ggplot(df, aes(x = bachelors_25, y = share_for )) + geom_point() + geom_smooth(method = "lm", formula = y~x) + labs(x = "Percentage of Population with Bachelors over 25", y = "Percentage Supporting ACA Expansion", title = "Yes Vote Vs College Education")
+ggplot(df, aes(x = bachelors_25, y = share_for)) + geom_point() + geom_smooth(method = "lm", formula = y~x) + labs(x = "Percentage of Population with Bachelors over 25", y = "Percentage Supporting ACA Expansion", title = "Yes Vote Vs College Education")
 
 #income polarization, Medicaid Expansion might generate more support from lower income voters
 ggplot(df, aes(x = median_income, y = share_for)) + geom_point() + geom_smooth(method = "lm", formula = y~x) + labs(x = "County Median Income", y = "Percentage Supporting ACA Expansion", title = "Yes Vote Vs Median Income")
@@ -67,6 +68,15 @@ non_mormon_idaho = df %>%
 
 #not a large diff, Non-Mormon counties actually have higher percentage for Yes votes
 
+rural %>%
+  filter(share_for > 20 & share_for < 35) %>%
+  ggplot(aes(x = median_income, y = share_for)) + geom_point() + labs(x = "Income", y = "Yes Vote Percentage", title = "Yes Vote Vs Income in Rural Areas") + geom_text_repel(aes(label = county), size = 3)
 
+
+#making graphs comparing state populations to national average 
+
+  
+
+  
 
 
