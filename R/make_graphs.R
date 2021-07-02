@@ -7,6 +7,9 @@ library(sjmisc)
 library(janitor)
 library(data.table)
 library(ggrepel)
+library(ggbeeswarm)
+library(hrbrthemes)
+
 
 # load data -----------------------------------------------------------------------------
 df = read_rds("output_data/aca_refs_final.rds")
@@ -41,7 +44,7 @@ ggplot(df, aes(x = non_white, y = share_for)) + geom_point() + geom_smooth(metho
 rural = df %>%
   filter(population < 100000) 
 
-ggplot(rural, aes(x = median_income, y = share_for))+ geom_point() + geom_smooth(method = "lm", formula = y~x) + labs(x = "Income", y = "Yes Vote Percentage", title = "Yes Vote Vs Income in Rural Areas") 
+ggplot(rural, aes(x = median_income, y = share_for))+ geom_point() + geom_smooth(method = "lm", formula = y~x) + labs(x = "Income", y = "Yes Vote Percentage", title = "Yes Vote Vs Income in Rural Areas")
 
 ggplot(rural, aes(x = population, y = share_for))+ geom_point() + geom_smooth(method = "lm", formula = y~x) + labs(x = "Population", y = "Yes Vote Percentage", title = "Yes Vote Vs Populatuon in Rural Areas") 
 
@@ -75,7 +78,33 @@ rural %>%
 
 #making graphs comparing state populations to national average 
 
-  
+ggplot(df, aes(x = state, y = median_income, 
+               fill = state, size = population)) + geom_quasirandom(shape = 21, 
+               color = "white", alpha = .8) + coord_flip() +
+               geom_hline(yintercept = 31133, lty = 2, size = 1) +
+               labs(title = "Median County Income Compared",
+                    x = NULL,
+                    y = "Median Income")
+
+ggplot(df, aes(x = state, y = bachelors_25, 
+               fill = state, size = population)) + geom_quasirandom(shape = 21, 
+               color = "white", alpha = .8) + coord_flip() +
+               geom_hline(yintercept = 36.6, lty = 2, size = 1) +
+               labs(title = "Education of Counties Compared",
+                    x = NULL,
+                    y = "Percentage of Population Above 25 with at least Bachelors")
+
+ggplot(df, aes(x = state, y = non_white, 
+               fill = state, size = population)) + geom_quasirandom(shape = 21, 
+               color = "white", alpha = .8) + coord_flip() +
+               geom_hline(yintercept = 40, lty = 2, size = 1) +
+               labs(title = "Diversity of Counties Compared",
+                    x = NULL,
+                    y = "Percentage of Population that is Non-White")
+
+ggsave("figures/county-features.png", device = "png")
+
+
 
   
 
