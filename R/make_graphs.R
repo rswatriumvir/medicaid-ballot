@@ -84,7 +84,9 @@ ggplot(df, aes(x = state, y = median_income,
                geom_hline(yintercept = 31133, lty = 2, size = 1) +
                labs(title = "Median County Income Compared",
                     x = NULL,
-                    y = "Median Income")
+                    y = "Median Income") +
+               scale_y_continuous(limits = c(20000, 55000)) +
+               theme(legend.position = "none")
 
 ggsave("figures/county-income.png", device = "png")
 
@@ -94,7 +96,10 @@ ggplot(df, aes(x = state, y = bachelors_25,
                geom_hline(yintercept = 36.6, lty = 2, size = 1) +
                labs(title = "Education of Counties Compared",
                     x = NULL,
-                    y = "Percentage of Population Above 25 with at least Bachelors")
+                    y = "Percentage of Population Above 25 with at least Bachelors") +
+               scale_y_continuous(limits = c(0, 100), 
+                     labels = scales::percent_format(scale = 1)) +
+               theme(legend.position = "none")
 
 ggsave("figures/county-education.png", device = "png")
 
@@ -104,7 +109,10 @@ ggplot(df, aes(x = state, y = non_white,
                geom_hline(yintercept = 40, lty = 2, size = 1) +
                labs(title = "Diversity of Counties Compared",
                     x = NULL,
-                    y = "Percentage of Population that is Non-White")
+                    y = "Percentage of Population that is Non-White") +
+               scale_y_continuous(limits = c(0, 100), 
+                     labels = scales::percent_format(scale = 1)) +
+               theme(legend.position = "none")
 
 ggsave("figures/diversity.png", device = "png")
 
@@ -114,7 +122,10 @@ ggplot(df, aes(x = state, y = republican,
                geom_hline(yintercept = 46.1, lty = 2, size = 1) +
                labs(title = "Conservatism of Counties Compared",
                     x = NULL,
-                    y = "Percentage of Vote for Republicans in 2016 Presidential")
+                    y = "Percentage of Vote for Republicans in 2016 Presidential") +
+               scale_y_continuous(limits = c(0, 100), 
+                     labels = scales::percent_format(scale = 1)) +
+               theme(legend.position = "none")
 
 ggsave("figures/county-rep.png", device = "png")
 
@@ -123,8 +134,11 @@ ggplot(df, aes(x = state, y = democrat,
                color = "white", alpha = .8) + coord_flip() +
                geom_hline(yintercept = 48.2, lty = 2, size = 1) +
                labs(title = "Liberalism of Counties Compared",
-       x = NULL,
-       y = "Percentage of Vote for Democrats in 2016 Presidential")
+                    x = NULL,
+                    y = "Percentage of Vote for Democrats in 2016 Presidential") +
+               scale_y_continuous(limits = c(0, 100), 
+                     labels = scales::percent_format(scale = 1)) +
+               theme(legend.position = "none")
 
 ggsave("figures/county-dem.png", device = "png") 
 
