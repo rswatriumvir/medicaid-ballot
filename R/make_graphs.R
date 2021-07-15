@@ -1,11 +1,5 @@
 # load libraries ----------------------------------------------------------------------
 library(tidyverse)
-library(readxl)
-library(tabulizer)
-library(tabulizerjars)
-library(sjmisc)
-library(janitor)
-library(data.table)
 library(ggrepel)
 library(ggbeeswarm)
 library(hrbrthemes)
@@ -28,7 +22,7 @@ ot_list = df %>% #outlier list
 
 
 
-ggplot(ot_list, aes(x = democrat, y = yes_diff) + geom_point() + labs(x = "Democratic Vote Share, 2016 Presidential", y = "Margin Between Yes Vote and 2016", title = "Yes Margin Vs 2016 Dem Presidential Vote") + geom_smooth(method = "lm", formula = y~x)
+ggplot(ot_list, aes(x = democrat, y = yes_diff)) + geom_point() + labs(x = "Democratic Vote Share, 2016 Presidential", y = "Margin Between Yes Vote and 2016", title = "Yes Margin Vs 2016 Dem Presidential Vote") + geom_smooth(method = "lm", formula = y~x)
 
 #plotting education polarization, recently higher educated counties have begun to support dems
 ggplot(df, aes(x = bachelors_25, y = share_for)) + geom_point() + geom_smooth(method = "lm", formula = y~x) + labs(x = "Percentage of Population with Bachelors over 25", y = "Percentage Supporting ACA Expansion", title = "Yes Vote Vs College Education")
