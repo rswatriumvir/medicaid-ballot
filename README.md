@@ -25,8 +25,17 @@
 
 ## TODO (6/2/2021):
 
-- [ ] finish cleaning up Missouri and merge into bigger dataset
+- [x] finish cleaning up Missouri and merge into bigger dataset
 - [x] create folder for output data and output data there as .rds
 - [ ] design + implement quality checks
-- [ ] figure out how to use tidycensus R package to access county-level census data
-- [ ] merge aca_refs with tidycensus data in merge_census.R
+- [x] figure out how to use tidycensus R package to access county-level census data
+- [x] merge aca_refs with tidycensus data in merge_census.R
+
+
+## TODO (7/15/2021):
+
+- [ ] decide what you want the final product to look like
+- [ ] add label to state plots so it's clear what the national average is
+- [ ] look for religion data in tidycensus to merge in
+- [ ] other relevant variables that would explain support? 
+- [ ] adapt predictive modeling template to your data
