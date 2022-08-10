@@ -25,7 +25,7 @@ ot_list = df %>% #outlier list
 ggplot(ot_list, aes(x = democrat, y = yes_diff)) + geom_point() + labs(x = "Democratic Vote Share, 2016 Presidential", y = "Margin Between Yes Vote and 2016", title = "Yes Margin Vs 2016 Dem Presidential Vote") + geom_smooth(method = "lm", formula = y~x)
 
 #plotting education polarization, recently higher educated counties have begun to support dems
-ggplot(df, aes(x = bachelors_25, y = share_for)) + geom_point() + geom_smooth(method = "lm", formula = y~x) + labs(x = "Percentage of Population with Bachelors over 25", y = "Percentage Supporting ACA Expansion", title = "Yes Vote Vs College Education")
+ggplot(df, aes(x = bachelors_25, y = share_for)) + geom_point() + geom_smooth(method = "lm", formula = y~x) + labs(x = "Bachelors (%) ", y = "Yes Vote (%)", title = "Yes Vote Vs College Education")
 
 #income polarization, Medicaid Expansion might generate more support from lower income voters
 ggplot(df, aes(x = median_income, y = share_for)) + geom_point() + geom_smooth(method = "lm", formula = y~x) + labs(x = "County Median Income", y = "Percentage Supporting ACA Expansion", title = "Yes Vote Vs Median Income")
@@ -40,7 +40,7 @@ rural = df %>%
 
 ggplot(rural, aes(x = median_income, y = share_for))+ geom_point() + geom_smooth(method = "lm", formula = y~x) + labs(x = "Income", y = "Yes Vote Percentage", title = "Yes Vote Vs Income in Rural Areas")
 
-ggplot(rural, aes(x = population, y = share_for))+ geom_point() + geom_smooth(method = "lm", formula = y~x) + labs(x = "Population", y = "Yes Vote Percentage", title = "Yes Vote Vs Populatuon in Rural Areas") 
+ggplot(rural, aes(x = population, y = share_for))+ geom_point() + geom_smooth(method = "lm", formula = y~x) + labs(x = "Population", y = "Yes Vote Percentage", title = "Yes Vote Vs Population in Rural Areas") 
 
 ggplot(rural, aes(x = non_white, y = share_for))+ geom_point() + geom_smooth(method = "lm", formula = y~x) + labs(x = "Non_White", y = "Yes Vote Percentage", title = "Yes Vote Vs Non_White in Rural Areas") 
 
